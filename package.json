@@ -1,0 +1,58 @@
+{
+  "name": "batch-matrix",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -H 0.0.0.0",
+    "build": "next build",
+    "vercel-build": "next build",
+    "netlify-build": "npm install --legacy-peer-deps && next build",
+    "deploy": "./prepare-netlify.sh",
+    "start": "next start",
+    "lint": "biome lint ./src",
+    "format": "biome format --write ./src"
+  },
+  "engines": {
+    "node": ">=18.17.0"
+  },
+  "dependencies": {
+    "@radix-ui/react-label": "^2.1.4",
+    "@radix-ui/react-select": "^2.2.5",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-tabs": "^1.1.9",
+    "@react-three/drei": "^9.88.17",
+    "@react-three/fiber": "^8.15.12",
+    "@types/papaparse": "^5.3.15",
+    "@types/react-plotly.js": "^2.6.3",
+    "@types/three": "^0.176.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.23.12",
+    "jspdf": "^3.0.1",
+    "jspdf-autotable": "^5.0.2",
+    "lucide-react": "^0.475.0",
+    "next": "^15.2.0",
+    "papaparse": "^5.5.2",
+    "plotly.js": "^3.1.0",
+    "plotly.js-dist": "^3.1.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-plotly.js": "^2.6.0",
+    "recharts": "^2.15.3",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss-animate": "^1.0.7",
+    "three": "^0.176.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@eslint/eslintrc": "^3",
+    "@types/node": "^20",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "eslint": "^9",
+    "eslint-config-next": "15.1.7",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}
