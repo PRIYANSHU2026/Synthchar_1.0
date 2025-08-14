@@ -14,5 +14,8 @@ export default defineConfig({
     outDir: 'dist',
     emptyOutDir: true,
     sourcemap: process.env.NODE_ENV !== 'production',
+    rollupOptions: {
+      external: ['next/dynamic'], // Explicitly mark next/dynamic as external
+    },
   },
 })

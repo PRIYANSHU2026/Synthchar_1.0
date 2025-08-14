@@ -1,7 +1,4 @@
-"use client";
-
-import { useState, useEffect } from 'react';
-import dynamic from 'next/dynamic';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { useBatch } from '@/contexts/BatchContext';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -9,11 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
-// Dynamically import Plotly to avoid SSR issues
-const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
+// Dynamically import Plotly using React.lazy
+const Plot = lazy(() => import('react-plotly.js'));
 
 // Import Plotly types
-import { Data } from 'plotly.js';
+import { Data, Layout, Config } from 'plotly.js';
 
 const PlotlyVisualization = () => {
   const { elementComposition } = useBatch();
@@ -121,8 +118,8 @@ const PlotlyVisualization = () => {
   };
 
   // Layout configuration for different chart types
-  const getLayout = () => {
-    const baseLayout = {
+  const getLayout = (): Partial<Layout> => {
+    const baseLayout: Partial<Layout> = {
       autosize: true,
       margin: { l: 50, r: 50, t: 50, b: 50 },
       paper_bgcolor: 'rgba(0,0,0,0)',
@@ -134,13 +131,13 @@ const PlotlyVisualization = () => {
       case 'pie':
         return {
           ...baseLayout,
-          title: 'Element Composition Distribution',
+          title: { text: 'Element Composition Distribution' },
         };
       
       case 'bar':
         return {
           ...baseLayout,
-          title: 'Element Composition Distribution',
+          title: { text: 'Element Composition Distribution' },
           xaxis: { title: 'Element' },
           yaxis: { title: 'Percentage (%)' }
         };
@@ -148,7 +145,7 @@ const PlotlyVisualization = () => {
       case 'radar':
         return {
           ...baseLayout,
-          title: 'Element Composition Radar',
+          title: { text: 'Element Composition Radar' },
           polar: {
             radialaxis: {
               visible: true,
@@ -160,15 +157,15 @@ const PlotlyVisualization = () => {
       case 'scatter':
         return {
           ...baseLayout,
-          title: 'Element Composition Scatter',
-          xaxis: { title: 'Elements' },
+          title: { text: 'Element Composition Scatter' },
+          xaxis: { title: 'Element' },
           yaxis: { title: 'Percentage (%)' }
         };
       
       case 'heatmap':
         return {
           ...baseLayout,
-          title: 'Element Composition Heatmap',
+          title: { text: 'Element Composition Heatmap' },
         };
       
       default:
@@ -177,12 +174,12 @@ const PlotlyVisualization = () => {
   };
 
   // Config options for Plotly
-  const config = {
+  const config: Partial<Config> = {
     responsive: true,
     displayModeBar: true,
     modeBarButtonsToRemove: ['lasso2d', 'select2d'],
     toImageButtonOptions: {
-      format: 'png',
+      format: 'png' as 'png' | 'svg' | 'jpeg' | 'webp',
       filename: 'batch_composition',
       height: 500,
       width: 700,
@@ -191,7 +188,7 @@ const PlotlyVisualization = () => {
   };
 
   // Ternary plot data preparation
-  const prepareTernaryData = () => {
+  const prepareTernaryData = (): Data[] | null => {
     // For demonstration, we'll use the top 3 elements for the ternary plot
     // In a real application, you might want to let users select which elements to include
     const top3Elements = [...processedData]
@@ -210,7 +207,7 @@ const PlotlyVisualization = () => {
     }));
     
     return [{
-      type: 'scatterternary',
+      type: 'scatterternary' as const,
       mode: 'markers',
       a: [normalizedElements[0].normalizedPercentage],
       b: [normalizedElements[1].normalizedPercentage],
@@ -226,7 +223,7 @@ const PlotlyVisualization = () => {
   };
 
   // Ternary plot layout
-  const getTernaryLayout = () => {
+  const getTernaryLayout = (): Partial<Layout> => {
     // For demonstration, we'll use the top 3 elements for the ternary plot
     const top3Elements = [...processedData]
       .sort((a, b) => b.percentage - a.percentage)
@@ -265,16 +262,16 @@ const PlotlyVisualization = () => {
         },
         sum: 100
       },
-      title: `Ternary Plot of Top 3 Elements`
+      title: { text: `Ternary Plot of Top 3 Elements` }
     };
   };
 
   // 3D visualization data
-  const prepare3DData = () => {
+  const prepare3DData = (): Data[] => {
     // Create a 3D scatter plot with random positions for elements
     // In a real application, you would use actual structural data
     return [{
-      type: 'scatter3d',
+      type: 'scatter3d' as const,
       mode: 'markers',
       x: processedData.map(() => Math.random() * 10),
       y: processedData.map(() => Math.random() * 10),
@@ -291,7 +288,7 @@ const PlotlyVisualization = () => {
   };
 
   // 3D visualization layout
-  const get3DLayout = () => {
+  const get3DLayout = (): Partial<Layout> => {
     return {
       autosize: true,
       margin: { l: 0, r: 0, t: 50, b: 0 },
@@ -303,7 +300,7 @@ const PlotlyVisualization = () => {
         zaxis: { title: '', showticklabels: false },
         aspectmode: 'cube'
       },
-      title: '3D Element Visualization'
+      title: { text: '3D Element Visualization' }
     };
   };
 
@@ -350,12 +347,14 @@ const PlotlyVisualization = () => {
             </CardHeader>
             <CardContent>
               <div className="h-[500px] w-full">
-                <Plot
-                  data={getPlotData()}
-                  layout={getLayout()}
-                  config={config}
-                  style={{ width: '100%', height: '100%' }}
-                />
+                <Suspense fallback={<div className="flex items-center justify-center h-full"><p>Loading chart...</p></div>}>
+                  <Plot
+                    data={getPlotData()}
+                    layout={getLayout()}
+                    config={config}
+                    style={{ width: '100%', height: '100%' }}
+                  />
+                </Suspense>
               </div>
             </CardContent>
           </Card>
@@ -372,12 +371,14 @@ const PlotlyVisualization = () => {
             <CardContent>
               <div className="h-[500px] w-full">
                 {prepareTernaryData() ? (
-                  <Plot
-                    data={prepareTernaryData()}
-                    layout={getTernaryLayout()}
-                    config={config}
-                    style={{ width: '100%', height: '100%' }}
-                  />
+                  <Suspense fallback={<div className="flex items-center justify-center h-full"><p>Loading chart...</p></div>}>
+                    <Plot
+                      data={prepareTernaryData()}
+                      layout={getTernaryLayout()}
+                      config={config}
+                      style={{ width: '100%', height: '100%' }}
+                    />
+                  </Suspense>
                 ) : (
                   <div className="flex items-center justify-center h-full">
                     <p className="text-muted-foreground">Not enough elements for ternary plot (minimum 3 required)</p>
@@ -398,12 +399,14 @@ const PlotlyVisualization = () => {
             </CardHeader>
             <CardContent>
               <div className="h-[500px] w-full">
-                <Plot
-                  data={prepare3DData()}
-                  layout={get3DLayout()}
-                  config={config}
-                  style={{ width: '100%', height: '100%' }}
-                />
+                <Suspense fallback={<div className="flex items-center justify-center h-full"><p>Loading chart...</p></div>}>
+                  <Plot
+                    data={prepare3DData()}
+                    layout={get3DLayout()}
+                    config={config}
+                    style={{ width: '100%', height: '100%' }}
+                  />
+                </Suspense>
               </div>
             </CardContent>
           </Card>
