@@ -5,16 +5,15 @@ import { fontSans } from '@/lib/fonts'
 import { cn } from '@/lib/utils'
 import Home from './pages/Home'
 
-// Load fonts
-useEffect(() => {
-  // Add Inter font link
-  const link = document.createElement('link');
-  link.rel = 'stylesheet';
-  link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap';
-  document.head.appendChild(link);
-}, [])
-
 function App() {
+  // Load fonts
+  useEffect(() => {
+    // Add Inter font link
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap';
+    document.head.appendChild(link);
+  }, [])
   return (
     <div className={cn(
       "min-h-screen bg-background font-sans antialiased",
