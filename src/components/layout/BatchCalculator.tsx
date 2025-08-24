@@ -70,7 +70,7 @@ const BatchCalculator: FC = () => {
             totalWeight={gfTotalWeight}
             desiredBatch={desiredBatch}
             title="GF-Adjusted Product Matrix"
-            description="(MW × Matrix)/1000 = Mol Qty. Each Mol Qty/Net wt = Batch wt (g) (GF applied to product MW)"
+            description="(Product MW × Matrix)/1000 = Mol Qty. Each Mol Qty/Net wt = Batch wt (g) (Using Product Elements and their MW)"
             showGF={true}
           />
         )}
