@@ -5,6 +5,7 @@ import path from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base: './', // Use relative paths instead of absolute paths
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -18,6 +19,10 @@ export default defineConfig({
     rollupOptions: {
       external: ['next/dynamic'], // Explicitly mark next/dynamic as external
       output: {
+        // Ensure assets use relative paths
+        assetFileNames: 'assets/[name]-[hash][extname]',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js',
         manualChunks: (id) => {
           // React and core libraries
           if (id.includes('node_modules/react/') || 

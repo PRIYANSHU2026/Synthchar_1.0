@@ -1,5 +1,3 @@
-"use client";
-
 import { BatchProvider } from '@/contexts/BatchContext';
 import BatchCalculator from '@/components/layout/BatchCalculator';
 import Creator from '@/components/forms/Creator';

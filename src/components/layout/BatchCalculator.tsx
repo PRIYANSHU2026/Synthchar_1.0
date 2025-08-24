@@ -1,5 +1,3 @@
-"use client";
-
 import type { FC } from 'react';
 import { useBatch } from '@/contexts/BatchContext';
 import BatchInputForm from '@/components/forms/BatchInputForm';
@@ -7,7 +5,8 @@ import BatchProductForm from '@/components/forms/BatchProductForm';
 import BatchResultTable from '@/components/ui/BatchResultTable';
 import BatchProductsResultTable from '@/components/ui/BatchProductsResultTable';
 import VisualizationSection from '@/components/chart/VisualizationSection';
-import BatchPlotlyVisualization from '@/components/chart/BatchPlotlyVisualization';
+// Temporarily remove Plotly visualization due to compatibility issues
+// import BatchPlotlyVisualization from '@/components/chart/BatchPlotlyVisualization';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 const BatchCalculator: FC = () => {
@@ -94,16 +93,11 @@ const BatchCalculator: FC = () => {
         <h2 className="text-2xl font-semibold mb-4">Batch Visualization</h2>
         <Tabs defaultValue="standard">
           <TabsList className="mb-4">
-            <TabsTrigger value="standard">Standard View</TabsTrigger>
-            <TabsTrigger value="advanced">Advanced Plotly</TabsTrigger>
+            <TabsTrigger value="standard">Visualization</TabsTrigger>
           </TabsList>
           
           <TabsContent value="standard">
             <VisualizationSection />
-          </TabsContent>
-          
-          <TabsContent value="advanced">
-            <BatchPlotlyVisualization />
           </TabsContent>
         </Tabs>
       </div>

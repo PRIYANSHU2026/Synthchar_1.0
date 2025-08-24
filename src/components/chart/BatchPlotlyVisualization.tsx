@@ -1,5 +1,3 @@
-"use client";
-
 import { type FC, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useBatch } from '@/contexts/BatchContext';

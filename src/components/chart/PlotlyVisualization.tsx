@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import { useBatch } from '@/contexts/BatchContext';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -6,11 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
-// Dynamically import Plotly using React.lazy
+// Import Plotly dynamically to avoid conflicts
+import { Suspense, lazy } from 'react';
 const Plot = lazy(() => import('react-plotly.js'));
 
-// Import Plotly types
-import { Data, Layout, Config } from 'plotly.js';
+// Import Plotly types without the implementation
+import type { Data, Layout, Config } from 'plotly.js';
 
 const PlotlyVisualization = () => {
   const { elementComposition } = useBatch();
@@ -399,7 +400,7 @@ const PlotlyVisualization = () => {
             </CardHeader>
             <CardContent>
               <div className="h-[500px] w-full">
-                <Suspense fallback={<div className="flex items-center justify-center h-full"><p>Loading chart...</p></div>}>
+                <Suspense fallback={<div className="flex items-center justify-center h-full"><p>Loading 3D visualization...</p></div>}>
                   <Plot
                     data={prepare3DData()}
                     layout={get3DLayout()}
