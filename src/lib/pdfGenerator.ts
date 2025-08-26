@@ -72,33 +72,7 @@ export const generatePdf = ({
     footStyles: { fillColor: [240, 240, 240], textColor: [0, 0, 0], fontStyle: 'bold' }
   });
 
-  // Add GF-Adjusted Product Matrix table (if available)
-  if (gfResults && gfWeightPercents && gfTotalWeight) {
-    const currentY = (doc as any).lastAutoTable.finalY + 10;
-
-    doc.setFontSize(16);
-    doc.setTextColor(0, 71, 171);
-    doc.text('GF-Adjusted Product Matrix', 14, currentY);
-    doc.setTextColor(0, 0, 0);
-
-    autoTable(doc, {
-      startY: currentY + 5,
-      head: [['Product', 'Product MW', 'Matrix (%)', 'Mol Qty', 'Batch wt (g)']],
-      body: gfResults.map((result, index) => [
-        result.productFormula || result.formula || '—',
-        result.mw.toFixed(3),
-        result.matrix.toFixed(3),
-        result.molQty.toFixed(4),
-        gfWeightPercents[index].toFixed(4)
-      ]),
-      foot: [
-        ['Net wt', '', gfResults.reduce((a, c) => a + Number(c.matrix), 0).toFixed(3), gfTotalWeight.toFixed(4), desiredBatch.toFixed(3)]
-      ],
-      theme: 'striped',
-      headStyles: { fillColor: [171, 71, 0] },
-      footStyles: { fillColor: [240, 240, 240], textColor: [0, 0, 0], fontStyle: 'bold' }
-    });
-  }
+  // GF-Adjusted Product Matrix table has been removed
 
   // Add Product Calculation Results (if available)
   if (productResults && productWeightPercents && productTotalWeight) {
@@ -106,7 +80,7 @@ export const generatePdf = ({
 
     doc.setFontSize(16);
     doc.setTextColor(0, 71, 171);
-    doc.text('Product Calculation Results', 14, currentY);
+    doc.text('GF-Adjusted Product Matrix', 14, currentY);
     doc.setTextColor(0, 0, 0);
 
     autoTable(doc, {
