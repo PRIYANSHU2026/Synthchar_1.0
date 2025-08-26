@@ -10,13 +10,13 @@ interface CompositionPieChartProps {
 }
 
 const CompositionPieChart: FC<CompositionPieChartProps> = ({ data, title }) => {
-  // Filter out elements with very small percentages (less than 0.5%)
+  // Filter out compounds with very small percentages (less than 0.5%)
   const filteredData = data.filter(item => item.percentage >= 0.5);
 
-  // If there are elements with < 0.5%, add an "Other" category
-  const smallElements = data.filter(item => item.percentage < 0.5);
-  if (smallElements.length > 0) {
-    const otherPercentage = smallElements.reduce((sum, item) => sum + item.percentage, 0);
+  // If there are compounds with < 0.5%, add an "Other" category
+  const smallCompounds = data.filter(item => item.percentage < 0.5);
+  if (smallCompounds.length > 0) {
+    const otherPercentage = smallCompounds.reduce((sum, item) => sum + item.percentage, 0);
     if (otherPercentage > 0) {
       filteredData.push({
         element: 'Other',
@@ -40,7 +40,7 @@ const CompositionPieChart: FC<CompositionPieChartProps> = ({ data, title }) => {
             outerRadius={90}
             innerRadius={30}
             labelLine={true}
-            label={({ element, percentage }) => `${element} (${percentage.toFixed(1)}%)`}
+            label={({ element, percentage }) => `${percentage.toFixed(1)}%`}
           >
             {filteredData.map((entry) => (
               <Cell key={`cell-${entry.element}`} fill={entry.color} />
@@ -48,7 +48,7 @@ const CompositionPieChart: FC<CompositionPieChartProps> = ({ data, title }) => {
           </Pie>
           <Tooltip
             formatter={(value: number) => [`${value.toFixed(2)}%`, 'Percentage']}
-            labelFormatter={(label) => `Element: ${label}`}
+            labelFormatter={(label) => `Compound: ${label}`}
           />
           <Legend />
         </PieChart>

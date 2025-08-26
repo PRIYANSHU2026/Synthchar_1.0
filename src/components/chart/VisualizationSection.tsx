@@ -46,7 +46,7 @@ const VisualizationSection: FC = () => {
         <div>
           <CardTitle>Batch Composition Visualization</CardTitle>
           <CardDescription>
-            Analyze the elemental composition of your batch
+            Analyze the compound composition of your batch
           </CardDescription>
         </div>
         <div className="flex items-center gap-2 mt-2 sm:mt-0">
@@ -98,12 +98,12 @@ const VisualizationSection: FC = () => {
         {activeView === 'pie' ? (
           <CompositionPieChart
             data={elementComposition}
-            title="Element Composition Distribution"
+            title="Batch Composition Distribution"
           />
         ) : (
           <CompositionSymbolicView
             data={elementComposition}
-            title="Symbolic Element Representation"
+            title="Batch Compound Representation"
           />
         )}
       </CardContent>

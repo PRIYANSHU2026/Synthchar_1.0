@@ -519,7 +519,7 @@ export function BatchProvider({ children }: { children: ReactNode }) {
   }
 
   // Generate element composition data for charts
-  const generateCompositionData = () => {
+  const generateElementCompositionData = () => {
     const elementMap = new Map<string, number>();
 
     // Extract elements from all compounds and sum their total contribution
@@ -543,7 +543,41 @@ export function BatchProvider({ children }: { children: ReactNode }) {
     }));
   };
 
-  const elementComposition = generateCompositionData();
+  // Generate batch/compound composition data for charts
+  const generateBatchCompositionData = () => {
+    // Filter out components with no formula or matrix
+    const validComponents = components.filter(comp => comp.formula && comp.matrix);
+    
+    // Calculate total matrix value
+    const totalMatrix = validComponents.reduce((sum, comp) => sum + (comp.matrix || 0), 0);
+    
+    // Map components to the format needed for visualization
+    return validComponents.map(comp => ({
+      element: comp.formula || '',  // Use formula as the label
+      percentage: ((comp.matrix || 0) / totalMatrix) * 100,
+      color: getRandomColor(comp.formula || '') // Generate a consistent color based on formula
+    }));
+  };
+  
+  // Function to generate a consistent color based on a string
+  const getRandomColor = (str: string) => {
+    // Simple hash function to generate a number from a string
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    
+    // Convert to a hex color
+    let color = '#';
+    for (let i = 0; i < 3; i++) {
+      const value = (hash >> (i * 8)) & 0xFF;
+      color += ('00' + value.toString(16)).substr(-2);
+    }
+    
+    return color;
+  };
+
+  const elementComposition = generateBatchCompositionData();
 
   const value = {
     // Data
