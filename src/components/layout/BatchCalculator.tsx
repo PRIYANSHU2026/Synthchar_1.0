@@ -53,7 +53,7 @@ const BatchCalculator: FC = () => {
         <BatchProductForm />
       </div>
 
-      <div className="mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         <BatchResultTable
           results={compResults}
           weightPercents={weightPercents}
@@ -62,6 +62,18 @@ const BatchCalculator: FC = () => {
           title="Precursor Matrix Calculation"
           description="(MW × Precursor Moles × Matrix)/1000 = Mol Qty. Each Mol Qty/Net wt = Batch wt (g)"
         />
+
+        {hasProductsWithGF && (
+          <BatchResultTable
+            results={gfResults}
+            weightPercents={gfWeightPercents}
+            totalWeight={gfTotalWeight}
+            desiredBatch={desiredBatch}
+            title="GF-Adjusted Product Matrix"
+            description="(Product MW × Matrix)/1000 = Mol Qty. Each Mol Qty/Net wt = Batch wt (g) (Using Product Elements and their MW)"
+            showGF={true}
+          />
+        )}
       </div>
 
       {hasValidProducts && (
@@ -71,8 +83,8 @@ const BatchCalculator: FC = () => {
             weightPercents={productWeightPercents}
             totalWeight={productTotalWeight}
             desiredBatch={desiredBatch}
-            title="GF-Adjusted Product Matrix"
-            description="(Product MW × Matrix)/1000 = Mol Qty. Each Mol Qty/Net wt = Batch wt (g) (Using Product Elements and their MW)"
+            title="Product Calculation Results"
+            description="Calculated product weights with gravimetric factors applied"
           />
         </div>
       )}

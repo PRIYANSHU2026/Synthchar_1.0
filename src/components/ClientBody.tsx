@@ -1,6 +1,7 @@
 import React from 'react';
 import BatchCalculator from '@/components/layout/BatchCalculator';
 import Creator from '@/components/forms/Creator';
+import GlassVisualization from '@/components/layout/GlassVisualization';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function ClientBody() {
@@ -19,6 +20,7 @@ export default function ClientBody() {
         <Tabs defaultValue="calculator">
           <TabsList className="mb-6 bg-white/80 p-1 backdrop-blur-sm border border-blue-200 shadow-sm">
             <TabsTrigger value="calculator" className="font-medium">Batch Calculator</TabsTrigger>
+            <TabsTrigger value="advancedViz" className="font-medium">Advanced Visualization</TabsTrigger>
             <TabsTrigger value="testFormulas" className="font-medium">Creator</TabsTrigger>
           </TabsList>
 
@@ -26,6 +28,9 @@ export default function ClientBody() {
             <BatchCalculator />
           </TabsContent>
 
+          <TabsContent value="advancedViz">
+            <GlassVisualization />
+          </TabsContent>
 
           <TabsContent value="testFormulas">
             <div className="mt-4 space-y-6">
