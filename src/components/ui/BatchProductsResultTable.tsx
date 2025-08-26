@@ -47,6 +47,7 @@ const BatchProductsResultTable: FC<BatchProductsResultTableProps> = ({
               <TableHead>Ratio</TableHead>
               <TableHead>GF</TableHead>
               <TableHead>MW eff.</TableHead>
+              <TableHead className="text-right">Mol Qty</TableHead>
               <TableHead className="text-right">Weight (g)</TableHead>
               <TableHead className="text-right">%</TableHead>
             </TableRow>
@@ -71,6 +72,9 @@ const BatchProductsResultTable: FC<BatchProductsResultTableProps> = ({
                       }
                     </TableCell>
                     <TableCell className="text-right font-mono text-sm">
+                      {result.molQty.toFixed(4)}
+                    </TableCell>
+                    <TableCell className="text-right font-mono text-sm">
                       {weightPercents[i].toFixed(4)}
                     </TableCell>
                     <TableCell className="text-right font-mono text-sm">
@@ -83,6 +87,9 @@ const BatchProductsResultTable: FC<BatchProductsResultTableProps> = ({
                     Total
                   </TableCell>
                   <TableCell className="text-right font-mono font-semibold">
+                    {totalWeight.toFixed(4)}
+                  </TableCell>
+                  <TableCell className="text-right font-mono font-semibold">
                     {desiredBatch.toFixed(2)}
                   </TableCell>
                   <TableCell className="text-right font-mono font-semibold">
@@ -92,7 +99,7 @@ const BatchProductsResultTable: FC<BatchProductsResultTableProps> = ({
               </>
             ) : (
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-4 text-muted-foreground">
+                <TableCell colSpan={8} className="text-center py-4 text-muted-foreground">
                   No valid products to display. Add products with their precursors to see results.
                 </TableCell>
               </TableRow>

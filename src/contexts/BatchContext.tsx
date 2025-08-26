@@ -518,28 +518,26 @@ export function BatchProvider({ children }: { children: ReactNode }) {
     });
   }
 
-  // Generate element composition data for charts
+  // Generate compound composition data for charts
   const generateCompositionData = () => {
-    const elementMap = new Map<string, number>();
+    const compoundMap = new Map<string, number>();
 
-    // Extract elements from all compounds and sum their total contribution
+    // Use compounds directly instead of extracting elements
     for (const comp of components) {
       if (!comp.formula || !comp.matrix) continue;
-
-      const elements = extractElements(comp.formula, atomics);
-      for (const { element, count } of elements) {
-        const current = elementMap.get(element) || 0;
-        elementMap.set(element, current + (count * comp.matrix));
-      }
+      
+      // Use the formula as the key and matrix as the value
+      const current = compoundMap.get(comp.formula) || 0;
+      compoundMap.set(comp.formula, current + comp.matrix);
     }
 
     // Convert to percentage
-    const total = Array.from(elementMap.values()).reduce((sum, val) => sum + val, 0);
+    const total = Array.from(compoundMap.values()).reduce((sum, val) => sum + val, 0);
 
-    return Array.from(elementMap.entries()).map(([element, value]) => ({
-      element,
+    return Array.from(compoundMap.entries()).map(([formula, value]) => ({
+      element: formula, // Reuse the element field for the formula
       percentage: (value / total) * 100,
-      color: getElementColor(element)
+      color: `hsl(${Math.floor(Math.random() * 360)}, 70%, 50%)` // Random color for each compound
     }));
   };
 
